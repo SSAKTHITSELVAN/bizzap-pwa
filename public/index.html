@@ -1,0 +1,103 @@
+<!-- public\index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#667eea" />
+    <meta
+      name="description"
+      content="Bizzap - B2B Social Networking Platform for lead generation, product catalogs, and business connections"
+    />
+    
+    <!-- PWA Meta Tags -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/icons/icon-192x192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bizzap.com/" />
+    <meta property="og:title" content="Bizzap - B2B Social Networking" />
+    <meta property="og:description" content="Connect your business with opportunities through leads, products, and networking" />
+    <meta property="og:image" content="%PUBLIC_URL%/icons/icon-512x512.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bizzap.com/" />
+    <meta property="twitter:title" content="Bizzap - B2B Social Networking" />
+    <meta property="twitter:description" content="Connect your business with opportunities through leads, products, and networking" />
+    <meta property="twitter:image" content="%PUBLIC_URL%/icons/icon-512x512.png" />
+    
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bizzap" />
+    
+    <!-- Microsoft Windows/Edge -->
+    <meta name="msapplication-TileColor" content="#667eea" />
+    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/icons/icon-192x192.png" />
+    
+    <title>Bizzap - B2B Social Networking</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    
+    <!-- PWA Install Prompt -->
+    <div id="pwa-install-prompt" style="display: none;" class="pwa-install-prompt">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <strong>Install Bizzap</strong>
+          <p style="margin: 4px 0; font-size: 14px; color: #666;">Get the full app experience</p>
+        </div>
+        <div>
+          <button id="pwa-install-btn" style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px;">
+            Install
+          </button>
+          <button id="pwa-dismiss-btn" style="background: none; border: 1px solid #ccc; padding: 8px 16px; border-radius: 6px;">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // PWA Install Prompt
+      let deferredPrompt;
+      const installPrompt = document.getElementById('pwa-install-prompt');
+      const installBtn = document.getElementById('pwa-install-btn');
+      const dismissBtn = document.getElementById('pwa-dismiss-btn');
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installPrompt.style.display = 'block';
+      });
+
+      installBtn.addEventListener('click', () => {
+        installPrompt.style.display = 'none';
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+          });
+        }
+      });
+
+      dismissBtn.addEventListener('click', () => {
+        installPrompt.style.display = 'none';
+        deferredPrompt = null;
+      });
+
+      // Hide install prompt if already installed
+      window.addEventListener('appinstalled', () => {
+        installPrompt.style.display = 'none';
+        deferredPrompt = null;
+      });
+    </script>
+  </body>
+</html>
